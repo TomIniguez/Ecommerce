@@ -1,0 +1,65 @@
+.newsletterSection {
+    background: var(--color-gray-50);
+}
+
+.newsletterContent {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.sectionTitle {
+    font-size: var(--text-4xl);
+    color: var(--color-gray-900);
+    margin-bottom: var(--space-4);
+}
+
+.sectionSubtitle {
+    font-size: var(--text-lg);
+    color: var(--color-gray-600);
+    margin-bottom: var(--space-8);
+}
+
+.newsletterForm {
+    display: flex;
+    gap: var(--space-4);
+}
+
+.newsletterInput {
+    flex: 1;
+    padding: var(--space-4) var(--space-6);
+    border: 2px solid var(--color-gray-300);
+    border-radius: var(--radius-lg);
+    font-size: var(--text-base);
+    transition: all var(--transition-base);
+}
+
+.newsletterInput:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-blue);
+}
+
+.btnPrimary {
+    padding: var(--space-4) var(--space-8);
+    font-size: var(--text-lg);
+    background: var(--gradient-primary);
+    color: var(--color-white);
+    border: none;
+    border-radius: var(--radius-lg);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    box-shadow: var(--shadow-blue);
+}
+
+.btnPrimary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 35px -5px rgba(30, 136, 229, 0.4);
+}
+
+@media (max-width: 768px) {
+    .newsletterForm {
+        flex-direction: column;
+    }
+}
