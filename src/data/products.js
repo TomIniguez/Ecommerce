@@ -4,7 +4,7 @@ export const products = [
         name: 'ASUS VivoBook S14',
         description: 'Ultra-slim 14" laptop with vibrant display, Intel Core i5, 8GB RAM, 512GB SSD. Perfect for productivity and entertainment.',
         price: 749.99,
-        image: '/assets/images/laptop-1.jpg',
+        image: './assets/images/laptop-1.jpg',
         category: 'laptops',
         badge: 'New'
     },
@@ -13,7 +13,7 @@ export const products = [
         name: 'Legion Tower 5i Gaming PC',
         description: 'Powerful gaming desktop with Intel i7, RTX 3070, 16GB RAM, 1TB SSD. Stunning RGB lighting and exceptional performance.',
         price: 1499.99,
-        image: '/assets/images/gaming-pc.jpg',
+        image: './assets/images/gaming-pc.jpg',
         category: 'gaming',
         badge: 'Hot'
     },
@@ -22,7 +22,7 @@ export const products = [
         name: 'HP Pavilion 15',
         description: 'Versatile 15.6" laptop with AMD Ryzen 5, 8GB RAM, 256GB SSD. Elegant design meets reliable performance.',
         price: 599.99,
-        image: '/assets/images/laptop-2.jpg',
+        image: './assets/images/laptop-2.jpg',
         category: 'laptops',
         badge: 'Sale'
     },
@@ -31,7 +31,7 @@ export const products = [
         name: 'Dell XPS 13 Pro',
         description: 'Premium ultrabook with 13.4" InfinityEdge display, Intel i7, 16GB RAM, 512GB SSD. Ultimate portability and power.',
         price: 1299.99,
-        image: '/assets/images/lifestyle-1.jpg',
+        image: './assets/images/lifestyle-1.jpg',
         category: 'laptops',
         badge: null
     },
@@ -40,7 +40,7 @@ export const products = [
         name: 'MacBook Air M2',
         description: "Apple's latest MacBook Air with M2 chip, 13.6\" Liquid Retina display, 8GB RAM, 256GB SSD. Incredibly thin and powerful.",
         price: 1199.99,
-        image: '/assets/images/lifestyle-2.jpg',
+        image: './assets/images/lifestyle-2.jpg',
         category: 'laptops',
         badge: null
     },
@@ -49,7 +49,7 @@ export const products = [
         name: 'Wireless Keyboard & Mouse Combo',
         description: 'Premium wireless keyboard and mouse set with ergonomic design, long battery life, and smooth connectivity.',
         price: 79.99,
-        image: '/assets/images/laptop-1.jpg',
+        image: './assets/images/laptop-1.jpg',
         category: 'accessories',
         badge: null
     }

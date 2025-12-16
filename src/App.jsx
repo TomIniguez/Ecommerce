@@ -8,7 +8,10 @@ import Testimonials from './components/Testimonials/Testimonials';
 import Newsletter from './components/Newsletter/Newsletter';
 import Footer from './components/Footer/Footer';
 import Notification from './components/Notification/Notification';
+import LoginModal from './components/Auth/LoginModal';
+import RegisterModal from './components/Auth/RegisterModal';
 import { useCart } from './context/CartContext';
+import { AuthProvider } from './context/AuthContext';
 import './App.css';
 
 function App() {
@@ -39,24 +42,29 @@ function App() {
     }, []);
 
     return (
-        <div className="app">
-            <Header searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-            <main>
-                <Hero />
-                <Products
-                    activeFilter={activeFilter}
-                    setActiveFilter={setActiveFilter}
-                    searchTerm={searchTerm}
-                />
-                <Categories setActiveFilter={setActiveFilter} />
-                <Features />
-                <Testimonials />
-                <Newsletter />
-            </main>
-            <Footer />
-            {notification && <Notification message={notification.message} type={notification.type} />}
-        </div>
+        <AuthProvider>
+            <div className="app">
+                <Header searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+                <main>
+                    <Hero />
+                    <Products
+                        activeFilter={activeFilter}
+                        setActiveFilter={setActiveFilter}
+                        searchTerm={searchTerm}
+                    />
+                    <Categories setActiveFilter={setActiveFilter} />
+                    <Features />
+                    <Testimonials />
+                    <Newsletter />
+                </main>
+                <Footer />
+                {notification && <Notification message={notification.message} type={notification.type} />}
+                <LoginModal />
+                <RegisterModal />
+            </div>
+        </AuthProvider>
     );
 }
 
 export default App;
+

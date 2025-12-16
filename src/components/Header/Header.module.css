@@ -163,6 +163,54 @@
     transform: rotate(-45deg) translateY(-8px);
 }
 
+/* Login Button */
+.loginBtn {
+    position: relative;
+    padding: var(--space-2);
+    color: var(--color-gray-700);
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.loginBtn:hover {
+    color: var(--color-primary);
+    transform: scale(1.05);
+}
+
+/* User Avatar */
+.userAvatar {
+    position: relative;
+    cursor: pointer;
+    transition: transform var(--transition-fast);
+}
+
+.userAvatar:hover {
+    transform: scale(1.05);
+}
+
+.avatarCircle {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-full);
+    background: var(--gradient-primary);
+    color: var(--color-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: var(--text-base);
+    box-shadow: var(--shadow-md);
+    transition: all var(--transition-base);
+}
+
+.avatarCircle:hover {
+    box-shadow: var(--shadow-blue);
+    transform: scale(1.05);
+}
+
 @media (max-width: 768px) {
     .navMenu {
         position: fixed;
@@ -195,5 +243,11 @@
 
     .searchBar input {
         width: 100%;
+    }
+
+    .avatarCircle {
+        width: 36px;
+        height: 36px;
+        font-size: var(--text-sm);
     }
 }

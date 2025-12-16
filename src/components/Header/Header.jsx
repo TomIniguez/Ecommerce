@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useCart } from '../../context/CartContext';
+import { useAuth } from '../../context/AuthContext';
 import styles from './Header.module.css';
 
 const Header = ({ searchTerm, setSearchTerm }) => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const { getCartCount } = useCart();
+    const { currentUser, openLoginModal, logout, getUserInitials } = useAuth();
+    const { showNotification } = useCart();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -22,6 +25,11 @@ const Header = ({ searchTerm, setSearchTerm }) => {
 
     const closeMobileMenu = () => {
         setIsMobileMenuOpen(false);
+    };
+
+    const handleLogout = () => {
+        const result = logout();
+        showNotification(result.message, 'success');
     };
 
     return (
@@ -63,6 +71,20 @@ const Header = ({ searchTerm, setSearchTerm }) => {
                         {getCartCount() > 0 && <span className={styles.cartBadge}>{getCartCount()}</span>}
                     </button>
 
+                    {/* Login Button / User Avatar */}
+                    {!currentUser ? (
+                        <button className={styles.loginBtn} onClick={openLoginModal} aria-label="Login">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </button>
+                    ) : (
+                        <div className={styles.userAvatar} onClick={handleLogout} title="Click to logout">
+                            <div className={styles.avatarCircle}>{getUserInitials()}</div>
+                        </div>
+                    )}
+
                     <button
                         className={`${styles.mobileMenuToggle} ${isMobileMenuOpen ? styles.active : ''}`}
                         onClick={toggleMobileMenu}
@@ -79,3 +101,4 @@ const Header = ({ searchTerm, setSearchTerm }) => {
 };
 
 export default Header;
+
