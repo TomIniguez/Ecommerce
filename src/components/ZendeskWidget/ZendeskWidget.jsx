@@ -1,8 +1,37 @@
 import { useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
+import jwt from 'jsonwebtoken';
 
 const ZendeskWidget = () => {
     const { currentUser } = useAuth();
+
+    // Hardcoded Zendesk credentials for demo (replace with your actual values)
+    const ZENDESK_KEY = '319875b5-1e67-4292-af08-1d517118a671';
+    const SECRET = 'your_shared_secret_here'; // Replace with your Zendesk shared secret from Admin Center
+    const KEY_ID = 'your_key_id_here'; // Replace with your Zendesk key ID from Admin Center
+
+    // Generate JWT token for Zendesk authentication
+    const generateZendeskJWT = (name, email) => {
+        const payload = {
+            name: name,
+            email: email,
+            external_id: email,
+            exp: Math.floor((new Date().getTime() + 300 * 1000) / 1000), // 5 minutes expiry
+            scope: 'user'
+        };
+
+        const header = {
+            alg: 'HS256',
+            typ: 'JWT',
+            kid: KEY_ID
+        };
+
+        // Sign the token with the secret
+        const token = jwt.sign(payload, SECRET, { header: header });
+
+        console.log('Generated JWT token for:', { name, email });
+        return token;
+    };
 
     useEffect(() => {
         // Only load Zendesk widget if user is logged in
@@ -25,12 +54,30 @@ const ZendeskWidget = () => {
                             clearInterval(checkZE);
                             console.log('Zendesk widget ready, identifying user...');
                             try {
+                                // Generate JWT token
+                                const jwtToken = generateZendeskJWT(currentUser.name, currentUser.email);
+
+                                // Identify user with Zendesk
                                 window.zE('webWidget', 'identify', {
                                     name: currentUser.name,
                                     email: currentUser.email
                                 });
+
+                                // Authenticate with JWT (uncomment if JWT auth is enabled in Zendesk)
+                                // window.zE('webWidget', 'authenticate', {
+                                //     jwt: jwtToken
+                                // });
+
+                                // Show the widget
                                 window.zE('webWidget', 'show');
+
                                 console.log('Zendesk widget shown and user identified');
+                                console.log('User credentials sent to Zendesk:', {
+                                    name: currentUser.name,
+                                    email: currentUser.email,
+                                    external_id: currentUser.email,
+                                    jwt_generated: true
+                                });
 
                                 // Debug: Check widget state
                                 setTimeout(() => {
