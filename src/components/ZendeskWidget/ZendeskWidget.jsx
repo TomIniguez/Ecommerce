@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import jwt from 'jsonwebtoken';
+import * as jose from 'jose';
 
 const ZendeskWidget = () => {
     const { currentUser } = useAuth();
@@ -10,27 +10,32 @@ const ZendeskWidget = () => {
     const SECRET = 'your_shared_secret_here'; // Replace with your Zendesk shared secret from Admin Center
     const KEY_ID = 'your_key_id_here'; // Replace with your Zendesk key ID from Admin Center
 
-    // Generate JWT token for Zendesk authentication
-    const generateZendeskJWT = (name, email) => {
-        const payload = {
-            name: name,
-            email: email,
-            external_id: email,
-            exp: Math.floor((new Date().getTime() + 300 * 1000) / 1000), // 5 minutes expiry
-            scope: 'user'
-        };
+    // Generate JWT token for Zendesk authentication (browser-compatible)
+    const generateZendeskJWT = async (name, email) => {
+        try {
+            const payload = {
+                name: name,
+                email: email,
+                external_id: email,
+                exp: Math.floor((new Date().getTime() + 300 * 1000) / 1000), // 5 minutes expiry
+                scope: 'user',
+                comitente: '123456'
+            };
 
-        const header = {
-            alg: 'HS256',
-            typ: 'JWT',
-            kid: KEY_ID
-        };
+            // Create secret key from string
+            const secret = new TextEncoder().encode(SECRET);
 
-        // Sign the token with the secret
-        const token = jwt.sign(payload, SECRET, { header: header });
+            // Sign the JWT
+            const token = await new jose.SignJWT(payload)
+                .setProtectedHeader({ alg: 'HS256', typ: 'JWT', kid: KEY_ID })
+                .sign(secret);
 
-        console.log('Generated JWT token for:', { name, email });
-        return token;
+            console.log('Generated JWT token for:', { name, email });
+            return token;
+        } catch (error) {
+            console.error('Error generating JWT:', error);
+            return null;
+        }
     };
 
     useEffect(() => {
@@ -49,13 +54,13 @@ const ZendeskWidget = () => {
                 script.onload = () => {
                     console.log('Zendesk script loaded successfully');
                     // Wait for zE to be available
-                    const checkZE = setInterval(() => {
+                    const checkZE = setInterval(async () => {
                         if (window.zE) {
                             clearInterval(checkZE);
                             console.log('Zendesk widget ready, identifying user...');
                             try {
-                                // Generate JWT token
-                                const jwtToken = generateZendeskJWT(currentUser.name, currentUser.email);
+                                // Generate JWT token (async)
+                                const jwtToken = await generateZendeskJWT(currentUser.name, currentUser.email);
 
                                 // Identify user with Zendesk
                                 window.zE('webWidget', 'identify', {
@@ -64,9 +69,11 @@ const ZendeskWidget = () => {
                                 });
 
                                 // Authenticate with JWT (uncomment if JWT auth is enabled in Zendesk)
-                                // window.zE('webWidget', 'authenticate', {
-                                //     jwt: jwtToken
-                                // });
+                                // if (jwtToken) {
+                                //     window.zE('webWidget', 'authenticate', {
+                                //         jwt: jwtToken
+                                //     });
+                                // }
 
                                 // Show the widget
                                 window.zE('webWidget', 'show');
@@ -76,7 +83,7 @@ const ZendeskWidget = () => {
                                     name: currentUser.name,
                                     email: currentUser.email,
                                     external_id: currentUser.email,
-                                    jwt_generated: true
+                                    jwt_generated: !!jwtToken
                                 });
 
                                 // Debug: Check widget state
