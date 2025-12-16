@@ -10,6 +10,7 @@ import Footer from './components/Footer/Footer';
 import Notification from './components/Notification/Notification';
 import LoginModal from './components/Auth/LoginModal';
 import RegisterModal from './components/Auth/RegisterModal';
+import ZendeskWidget from './components/ZendeskWidget/ZendeskWidget';
 import { useCart } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
 import './App.css';
@@ -61,6 +62,7 @@ function App() {
                 {notification && <Notification message={notification.message} type={notification.type} />}
                 <LoginModal />
                 <RegisterModal />
+                <ZendeskWidget />
             </div>
         </AuthProvider>
     );
