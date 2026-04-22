@@ -11,7 +11,7 @@ const LoginModal = () => {
 
     if (!showLoginModal) return null;
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!email || !password) {
@@ -19,7 +19,7 @@ const LoginModal = () => {
             return;
         }
 
-        const result = login(email, password);
+        const result = await login(email, password);
         showNotification(result.message, result.success ? 'success' : 'error');
 
         if (result.success) {

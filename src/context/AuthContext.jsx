@@ -2,6 +2,36 @@ import { createContext, useState, useContext, useEffect } from 'react';
 
 const AuthContext = createContext();
 
+const PASSWORD_SALT = 'shopily_demo_salt_v1';
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const DEMO_USER = {
+    name: 'Demo User',
+    email: 'demo@shopily.com',
+    // Plain password is 'demo1234'. Hashed at seed time.
+    plainPassword: 'demo1234'
+};
+
+const hashPassword = async (password) => {
+    const data = new TextEncoder().encode(password + PASSWORD_SALT);
+    const digest = await crypto.subtle.digest('SHA-256', data);
+    return Array.from(new Uint8Array(digest))
+        .map(b => b.toString(16).padStart(2, '0'))
+        .join('');
+};
+
+const seedDemoUser = async () => {
+    const users = JSON.parse(localStorage.getItem('shopily_users') || '[]');
+    if (!users.some(u => u.email === DEMO_USER.email)) {
+        users.push({
+            name: DEMO_USER.name,
+            email: DEMO_USER.email,
+            passwordHash: await hashPassword(DEMO_USER.plainPassword)
+        });
+        localStorage.setItem('shopily_users', JSON.stringify(users));
+    }
+};
+
 export const useAuth = () => {
     const context = useContext(AuthContext);
     if (!context) {
@@ -15,17 +45,18 @@ export const AuthProvider = ({ children }) => {
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [showRegisterModal, setShowRegisterModal] = useState(false);
 
-    // Check for existing session on mount
     useEffect(() => {
+        seedDemoUser();
         const savedUser = localStorage.getItem('shopily_current_user');
         if (savedUser) {
             setCurrentUser(JSON.parse(savedUser));
         }
     }, []);
 
-    const login = (email, password) => {
+    const login = async (email, password) => {
         const users = JSON.parse(localStorage.getItem('shopily_users') || '[]');
-        const user = users.find(u => u.email === email && u.password === password);
+        const passwordHash = await hashPassword(password);
+        const user = users.find(u => u.email === email && u.passwordHash === passwordHash);
 
         if (user) {
             const userData = { name: user.name, email: user.email };
@@ -33,28 +64,28 @@ export const AuthProvider = ({ children }) => {
             localStorage.setItem('shopily_current_user', JSON.stringify(userData));
             setShowLoginModal(false);
             return { success: true, message: `Welcome back, ${user.name}!` };
-        } else {
-            return { success: false, message: 'Invalid email or password' };
         }
+        return { success: false, message: 'Invalid email or password' };
     };
 
-    const register = (name, email, password) => {
-        const users = JSON.parse(localStorage.getItem('shopily_users') || '[]');
-        const existingUser = users.find(u => u.email === email);
-
-        if (existingUser) {
-            return { success: false, message: 'An account with this email already exists' };
+    const register = async (name, email, password) => {
+        if (!EMAIL_REGEX.test(email)) {
+            return { success: false, message: 'Please enter a valid email address' };
         }
 
         if (password.length < 6) {
             return { success: false, message: 'Password must be at least 6 characters' };
         }
 
-        const newUser = { name, email, password };
-        users.push(newUser);
+        const users = JSON.parse(localStorage.getItem('shopily_users') || '[]');
+        if (users.some(u => u.email === email)) {
+            return { success: false, message: 'An account with this email already exists' };
+        }
+
+        const passwordHash = await hashPassword(password);
+        users.push({ name, email, passwordHash });
         localStorage.setItem('shopily_users', JSON.stringify(users));
 
-        // Auto login after registration
         const userData = { name, email };
         setCurrentUser(userData);
         localStorage.setItem('shopily_current_user', JSON.stringify(userData));

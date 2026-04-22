@@ -25,3 +25,8 @@ dist-ssr
 
 # Backup
 Ecommerce-backup
+
+# Environment
+.env
+.env.*
+!.env.example

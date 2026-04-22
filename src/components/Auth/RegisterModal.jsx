@@ -12,7 +12,7 @@ const RegisterModal = () => {
 
     if (!showRegisterModal) return null;
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!name || !email || !password) {
@@ -20,7 +20,7 @@ const RegisterModal = () => {
             return;
         }
 
-        const result = register(name, email, password);
+        const result = await register(name, email, password);
         showNotification(result.message, result.success ? 'success' : 'error');
 
         if (result.success) {
