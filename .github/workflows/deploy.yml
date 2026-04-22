@@ -32,6 +32,13 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          VITE_ZENDESK_KEY: ${{ secrets.VITE_ZENDESK_KEY }}
+          VITE_SHARED_SECRET: ${{ secrets.VITE_SHARED_SECRET }}
+          VITE_KEY_ID: ${{ secrets.VITE_KEY_ID }}
+          VITE_SUNSHINE_APP_ID: ${{ secrets.VITE_SUNSHINE_APP_ID }}
+          VITE_SUNSHINE_USERNAME: ${{ secrets.VITE_SUNSHINE_USERNAME }}
+          VITE_SUNSHINE_PASSWORD: ${{ secrets.VITE_SUNSHINE_PASSWORD }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
