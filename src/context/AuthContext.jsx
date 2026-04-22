@@ -31,6 +31,7 @@ const seedDemoUser = async () => {
         localStorage.setItem('shopily_users', JSON.stringify(users));
     }
 };
+//random comment
 
 export const useAuth = () => {
     const context = useContext(AuthContext);
