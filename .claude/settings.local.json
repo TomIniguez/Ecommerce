@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C \"C:\\\\Users\\\\Usuario\\\\Documents\\\\Projects\\\\Ecommerce\\\\Ecommerce\" log --oneline -20)",
+      "Bash(git -C \"C:\\\\Users\\\\Usuario\\\\Documents\\\\Projects\\\\Ecommerce\\\\Ecommerce\" diff HEAD~1 HEAD)",
+      "Bash(git rm *)",
+      "Bash(git filter-repo *)",
+      "Bash(pip install *)",
+      "Bash(python -m pip install git-filter-repo)",
+      "Bash(py --version)",
+      "Bash(git stash *)",
+      "Bash(git reset *)",
+      "Bash(FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch --force --index-filter \"git rm --cached --ignore-unmatch .env\" --prune-empty --tag-name-filter cat -- --all)",
+      "Bash(git update-ref *)",
+      "Bash(git reflog *)",
+      "Bash(git gc *)",
+      "Bash(git check-ignore *)",
+      "Bash(git push *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
+    ]
+  }
+}

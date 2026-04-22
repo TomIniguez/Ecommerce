@@ -82,10 +82,8 @@ const ZendeskWidget = () => {
                                 if (error) {
                                     console.error('Zendesk login failed:', error);
                                 } else {
-                                    // Show the messenger widget
                                     window.zE('messenger', 'show');
-
-                                    // Update user metadata after successful login
+                                    window.zE('messenger', 'open');
                                     updateUserData(currentUser.email);
                                 }
                             });
@@ -115,8 +113,7 @@ const ZendeskWidget = () => {
                                 console.error('Zendesk login failed:', error);
                             } else {
                                 window.zE('messenger', 'show');
-
-                                // Update user metadata after successful login
+                                window.zE('messenger', 'open');
                                 updateUserData(currentUser.email);
                             }
                         });
