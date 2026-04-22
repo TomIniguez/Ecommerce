@@ -30,3 +30,6 @@ Ecommerce-backup
 .env
 .env.*
 !.env.example
+
+# Claude Code
+.claude/
