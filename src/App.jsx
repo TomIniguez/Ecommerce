@@ -11,6 +11,8 @@ import Notification from './components/Notification/Notification';
 import LoginModal from './components/Auth/LoginModal';
 import RegisterModal from './components/Auth/RegisterModal';
 import ZendeskWidget from './components/ZendeskWidget/ZendeskWidget';
+import AbandonedCartModal from './components/Cart/AbandonedCartModal';
+import CartReminders from './components/Cart/CartReminders';
 import { useCart } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
 import './App.css';
@@ -63,6 +65,8 @@ function App() {
                 <LoginModal />
                 <RegisterModal />
                 <ZendeskWidget />
+                <AbandonedCartModal />
+                <CartReminders />
             </div>
         </AuthProvider>
     );
