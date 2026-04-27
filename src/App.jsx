@@ -13,6 +13,7 @@ import RegisterModal from './components/Auth/RegisterModal';
 import ZendeskWidget from './components/ZendeskWidget/ZendeskWidget';
 import AbandonedCartModal from './components/Cart/AbandonedCartModal';
 import CartReminders from './components/Cart/CartReminders';
+import AbandonedCartEmailer from './components/Cart/AbandonedCartEmailer';
 import { useCart } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
 import './App.css';
@@ -67,6 +68,7 @@ function App() {
                 <ZendeskWidget />
                 <AbandonedCartModal />
                 <CartReminders />
+                <AbandonedCartEmailer />
             </div>
         </AuthProvider>
     );
