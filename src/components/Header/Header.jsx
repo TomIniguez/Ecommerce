@@ -1,11 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
+import CartDropdown from '../Cart/CartDropdown';
 import styles from './Header.module.css';
 
 const Header = ({ searchTerm, setSearchTerm }) => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [isCartOpen, setIsCartOpen] = useState(false);
+    const cartButtonRef = useRef(null);
     const { getCartCount } = useCart();
     const { currentUser, openLoginModal, logout, getUserInitials } = useAuth();
     const { showNotification } = useCart();
@@ -62,14 +65,27 @@ const Header = ({ searchTerm, setSearchTerm }) => {
                         />
                     </div>
 
-                    <button className={styles.cartIcon} aria-label="Shopping cart">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <circle cx="9" cy="21" r="1"></circle>
-                            <circle cx="20" cy="21" r="1"></circle>
-                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                        </svg>
-                        {getCartCount() > 0 && <span className={styles.cartBadge}>{getCartCount()}</span>}
-                    </button>
+                    <div className={styles.cartWrapper}>
+                        <button
+                            ref={cartButtonRef}
+                            className={styles.cartIcon}
+                            aria-label="Shopping cart"
+                            aria-expanded={isCartOpen}
+                            onClick={() => setIsCartOpen((v) => !v)}
+                        >
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <circle cx="9" cy="21" r="1"></circle>
+                                <circle cx="20" cy="21" r="1"></circle>
+                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                            </svg>
+                            {getCartCount() > 0 && <span className={styles.cartBadge}>{getCartCount()}</span>}
+                        </button>
+                        <CartDropdown
+                            open={isCartOpen}
+                            onClose={() => setIsCartOpen(false)}
+                            anchorRef={cartButtonRef}
+                        />
+                    </div>
 
                     {/* Login Button / User Avatar */}
                     {!currentUser ? (

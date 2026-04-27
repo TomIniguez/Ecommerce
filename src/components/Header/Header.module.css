@@ -109,12 +109,19 @@
     color: var(--color-gray-500);
 }
 
+.cartWrapper {
+    position: relative;
+    display: inline-flex;
+}
+
 .cartIcon {
     position: relative;
     padding: var(--space-2);
     color: var(--color-gray-700);
     transition: color var(--transition-fast);
     cursor: pointer;
+    background: transparent;
+    border: none;
 }
 
 .cartIcon:hover {

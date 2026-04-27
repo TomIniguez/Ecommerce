@@ -138,6 +138,23 @@ export const CartProvider = ({ children }) => {
         showNotification('Item removed from cart', 'success');
     };
 
+    const incrementItem = (productId) => {
+        setCart(prevCart => {
+            const match = prevCart.find(item => item.id === productId);
+            return match ? [...prevCart, match] : prevCart;
+        });
+    };
+
+    const decrementItem = (productId) => {
+        setCart(prevCart => {
+            const idx = prevCart.findIndex(item => item.id === productId);
+            if (idx === -1) return prevCart;
+            const next = [...prevCart];
+            next.splice(idx, 1);
+            return next;
+        });
+    };
+
     const clearCart = () => {
         setCart([]);
         setAppliedDiscount(null);
@@ -185,6 +202,8 @@ export const CartProvider = ({ children }) => {
         cart,
         addToCart,
         removeFromCart,
+        incrementItem,
+        decrementItem,
         clearCart,
         getCartTotal,
         getCartSubtotal,
