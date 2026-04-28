@@ -21,7 +21,7 @@ export const sendAbandonedCartNotification = async ({ user, cart }) => {
 
     const customerName = 'Ivette';
     const productNames = [...new Set(cart.map(i => i.name))].join(', ');
-    const linkToCart = 'test';
+    const linkToCart = 'https://tominiguez.github.io/Ecommerce/';
 
     const payload = {
         lineId: LINE_ID,
