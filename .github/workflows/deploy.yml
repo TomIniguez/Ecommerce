@@ -39,6 +39,11 @@ jobs:
           VITE_SUNSHINE_APP_ID: ${{ secrets.VITE_SUNSHINE_APP_ID }}
           VITE_SUNSHINE_USERNAME: ${{ secrets.VITE_SUNSHINE_USERNAME }}
           VITE_SUNSHINE_PASSWORD: ${{ secrets.VITE_SUNSHINE_PASSWORD }}
+          VITE_PRDW_TOKEN: ${{ secrets.VITE_PRDW_TOKEN }}
+          VITE_WA_INTEGRATION_ID: ${{ secrets.VITE_WA_INTEGRATION_ID }}
+          VITE_WA_DESTINATION_ID: ${{ secrets.VITE_WA_DESTINATION_ID }}
+          VITE_WA_TEMPLATE_NAME: ${{ secrets.VITE_WA_TEMPLATE_NAME }}
+          VITE_RETURN_URL: ${{ secrets.VITE_RETURN_URL }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
