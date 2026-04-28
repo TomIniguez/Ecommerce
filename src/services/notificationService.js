@@ -1,14 +1,15 @@
-const ENDPOINT = 'https://prdwproxy.witbor.com/sunshine/notification';
+const ENDPOINT = 'https://prdwproxy.witbor.com/sunshine/messages/single';
 
 const TOKEN = import.meta.env.VITE_PRDW_TOKEN;
-const INTEGRATION_ID = import.meta.env.VITE_WA_INTEGRATION_ID;
+const LINE_ID = import.meta.env.VITE_WA_LINE_ID;
+const TEMPLATE_ID = import.meta.env.VITE_WA_TEMPLATE_ID;
 const DESTINATION_ID = import.meta.env.VITE_WA_DESTINATION_ID;
-const TEMPLATE_NAME = import.meta.env.VITE_WA_TEMPLATE_NAME || 'abandoned_cart';
+const USERNAME = import.meta.env.VITE_WA_USERNAME;
 const RETURN_URL = import.meta.env.VITE_RETURN_URL
     || (typeof window !== 'undefined' ? window.location.origin : 'https://shopily.com');
 
 export const isConfigured = () =>
-    Boolean(TOKEN && INTEGRATION_ID && DESTINATION_ID);
+    Boolean(TOKEN && LINE_ID && TEMPLATE_ID && DESTINATION_ID && USERNAME);
 
 export const sendAbandonedCartNotification = async ({ user, cart }) => {
     if (!isConfigured()) {
@@ -20,27 +21,35 @@ export const sendAbandonedCartNotification = async ({ user, cart }) => {
 
     const customerName = 'Ivette';
     const productNames = [...new Set(cart.map(i => i.name))].join(', ');
-    const linkToCart = RETURN_URL;
+    const linkToCart = 'test';
 
     const payload = {
-        destination: { integrationId: INTEGRATION_ID, destinationId: DESTINATION_ID },
-        author: { role: 'appMaker' },
-        messageSchema: 'whatsapp',
+        lineId: LINE_ID,
+        templateId: TEMPLATE_ID,
         message: {
-            type: 'template',
-            template: {
-                name: TEMPLATE_NAME,
-                language: { policy: 'deterministic', code: 'en' },
-                components: [{
-                    type: 'body',
-                    parameters: [
-                        { type: 'text', text: customerName },
-                        { type: 'text', text: productNames },
-                        { type: 'text', text: linkToCart },
-                    ],
-                }],
-            },
+            id: 1,
+            to: DESTINATION_ID,
+            customerName: '',
+            vars: [
+                { value: customerName, key: 'customer_name', location: 'BODY' },
+                { value: productNames, key: 'product_name', location: 'BODY' },
+                { value: linkToCart, key: 'link_to_cart', location: 'BODY' },
+            ],
+            status: 'PENDING',
         },
+        schedule: null,
+        statisticTicketSettings: {
+            requester: {
+                name: 'Witalker by Witbor',
+                email: 'witalker@bywitbor.com',
+            },
+            settings: {
+                agentAsRequester: false,
+                ticketStatus: 'closed',
+            },
+            locale: 'es',
+        },
+        username: USERNAME,
     };
 
     try {
@@ -49,10 +58,11 @@ export const sendAbandonedCartNotification = async ({ user, cart }) => {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${TOKEN}`,
-                appId: "641c860da4cefd0115ce6a87",
-                key: "app_6892125605d49bf201baf4f3:IH_ivv6TqD-BxYCZUvNf4MQVNQt4i6FwTaOB8mN1vr8PW4JJ_cTcwRvrb7tUqs-mMJ_Jgapo-Q4d6zljAStkNA",
-                subdomain:"https://shopily.zendesk.com/"
-
+                appId: '641c860da4cefd0115ce6a87',
+                key: 'app_6892125605d49bf201baf4f3:IH_ivv6TqD-BxYCZUvNf4MQVNQt4i6FwTaOB8mN1vr8PW4JJ_cTcwRvrb7tUqs-mMJ_Jgapo-Q4d6zljAStkNA',
+                subdomain: 'https://shopily.zendesk.com',
+                'zendesk-api-user': 'tomas.iniguez@witbor.com',
+                'zendesk-api-key': 'pcBWNLpYhJuwIZMluNP83SiJ1X59da7XTXdYhd5d',
             },
             body: JSON.stringify(payload),
         });
