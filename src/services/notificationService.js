@@ -18,7 +18,7 @@ export const sendAbandonedCartNotification = async ({ user, cart }) => {
         return { success: false, error: 'Cart is empty.' };
     }
 
-    const customerName = user?.name || 'Customer';
+    const customerName = 'Ivette';
     const productNames = [...new Set(cart.map(i => i.name))].join(', ');
     const linkToCart = RETURN_URL;
 
@@ -30,7 +30,7 @@ export const sendAbandonedCartNotification = async ({ user, cart }) => {
             type: 'template',
             template: {
                 name: TEMPLATE_NAME,
-                language: { policy: 'deterministic', code: 'es' },
+                language: { policy: 'deterministic', code: 'en' },
                 components: [{
                     type: 'body',
                     parameters: [
@@ -49,6 +49,10 @@ export const sendAbandonedCartNotification = async ({ user, cart }) => {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${TOKEN}`,
+                appId: "641c860da4cefd0115ce6a87",
+                key: "app_6892125605d49bf201baf4f3:IH_ivv6TqD-BxYCZUvNf4MQVNQt4i6FwTaOB8mN1vr8PW4JJ_cTcwRvrb7tUqs-mMJ_Jgapo-Q4d6zljAStkNA",
+                subdomain:"https://shopily.zendesk.com/"
+
             },
             body: JSON.stringify(payload),
         });
