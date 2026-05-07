@@ -19,7 +19,7 @@ export const sendAbandonedCartNotification = async ({ user, cart }) => {
         return { success: false, error: 'Cart is empty.' };
     }
 
-    const customerName = 'Ivette';
+    const customerName = 'Tomas';
     const productNames = [...new Set(cart.map(i => i.name))].join(', ');
     const linkToCart = 'https://tominiguez.github.io/Ecommerce/';
 
