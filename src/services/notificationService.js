@@ -38,6 +38,14 @@ export const sendAbandonedCartNotification = async ({ user, cart }) => {
             status: 'PENDING',
         },
         schedule: null,
+
+         metadata: {
+            proactive_template_id: TEMPLATE_ID,
+            proactive_campaign:    'abandoned_cart',
+            proactive_product:     productNames,
+            proactive_cart_url:    linkToCart,
+            proactive_customer:    customerName,
+        },
         statisticTicketSettings: {
             requester: {
                 name: 'Witalker by Witbor',
